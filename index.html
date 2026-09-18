@@ -91,6 +91,10 @@
   /* На широких десктопных экранах контейнер становится "короче и шире" относительно фото,
      поэтому ограничиваем высоту сильнее, чтобы не обрезать лица/верх кадра. */
   @media (min-width: 1000px) { .hero { height: 62vh; max-height: 560px; } }
+  /* На телефонах первое фото — на весь экран */
+  @media (max-width: 899px) {
+    .hero { height: 100vh; height: 100svh; min-height: 100vh; min-height: 100svh; max-height: none; }
+  }
   .hero img { width: 100%; height: 100%; object-fit: cover; object-position: center 22%; display: block; filter: grayscale(100%) contrast(1.05);
     mask-image: linear-gradient(to bottom, black 58%, transparent 100%);
     -webkit-mask-image: linear-gradient(to bottom, black 58%, transparent 100%); }
@@ -375,7 +379,6 @@
   </div>
 
   <div class="loc-card reveal">
-    
     <div class="loc-tag lang-ru">Банкет · 17:00</div>
     <p class="loc-name lang-ru">Ресторан «Панорама»</p>
     <p class="loc-address lang-ru">Москва, Кутузовский проспект, д. 45</p>
