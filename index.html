@@ -91,9 +91,12 @@
   /* На широких десктопных экранах контейнер становится "короче и шире" относительно фото,
      поэтому ограничиваем высоту сильнее, чтобы не обрезать лица/верх кадра. */
   @media (min-width: 1000px) { .hero { height: 62vh; max-height: 560px; } }
-  /* На телефонах первое фото — на весь экран */
+  /* На телефонах первое фото — на весь экран.
+     Используем CSS-переменную --vh (задаётся в JS), т.к. в Яндекс.Браузере
+     и части мобильных браузеров 100vh/100svh считаются неточно из-за
+     скрывающейся адресной строки. */
   @media (max-width: 899px) {
-    .hero { height: 100vh; height: 100svh; min-height: 100vh; min-height: 100svh; max-height: none; }
+    .hero { height: 100vh; height: calc(var(--vh, 1vh) * 100); min-height: 100vh; min-height: calc(var(--vh, 1vh) * 100); max-height: none; }
   }
   .hero img { width: 100%; height: 100%; object-fit: cover; object-position: center 22%; display: block; filter: grayscale(100%) contrast(1.05);
     mask-image: linear-gradient(to bottom, black 58%, transparent 100%);
@@ -499,6 +502,19 @@
 </div>
 
 <script>
+  // ── ТОЧНАЯ ВЫСОТА ЭКРАНА (fix для Яндекс.Браузера и др.) ─────────────
+  // 100vh/100svh в мобильных браузерах считаются неточно из-за адресной
+  // строки, которая появляется/скрывается при скролле. Считаем реальную
+  // высоту окна в пикселях и кладём в CSS-переменную --vh.
+  (function () {
+    function setVH() {
+      document.documentElement.style.setProperty('--vh', (window.innerHeight * 0.01) + 'px');
+    }
+    setVH();
+    window.addEventListener('resize', setVH);
+    window.addEventListener('orientationchange', setVH);
+  })();
+
   // ── MUSIC TOGGLE ─────────────
   (function () {
     var audio = document.getElementById('bgMusic');
